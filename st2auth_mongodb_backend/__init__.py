@@ -18,3 +18,5 @@ from mongodb import MongoDBAuthenticationBackend
 __all__ = [
     'MongoDBAuthenticationBackend'
 ]
+
+__version__ = '0.1.0'
