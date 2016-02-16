@@ -1,12 +1,47 @@
-# MongoDB StackStorm Authentication Backend
+# MongoDB authentication plugin for StackStorm Community edition
 
 [![Build Status](https://api.travis-ci.org/StackStorm/st2-auth-backend-mongodb.svg?branch=master)](https://travis-ci.org/StackStorm/st2-auth-backend-mongodb) [![IRC](https://img.shields.io/irc/%23stackstorm.png)](http://webchat.freenode.net/?channels=stackstorm)
 
-This repository contains MongoDB StackStorm authentication backend. This backend reads
-credentials from a MongoDB collection named ``users``.
+The MongoDB backend reads and authenticates user against data from a MongoDB collection named 
+``users``. The ``users`` collection and the user entries  will have to be generated manually.
+Entries need to have the following attributes:
 
-For information on how to install and configure this backend, please see the official
-documentation - http://docs.stackstorm.com/config/authentication.html#mongodb-backend
+| field    | description                                                  |
+| ---------|--------------------------------------------------------------|
+| username | User name                                                    |
+| salt     | Password salt                                                |
+| password | SHA256 hash for the salt+password - SHA256(salt+password)    |
+
+### Configuration Options
+
+| option      | required | default   | description                                              |
+|-------------|----------|-----------|----------------------------------------------------------|
+| db_host     | no       | localhost | Hostname for the MongoDB server                          |
+| db_port     | no       | 27017     | Port for the MongoDB server                              |
+| db_name     | no       | st2auth   | Database name in MongoDB                                 |
+| db_username | no       | None      | Username for MongoDB login                               |
+| db_password | no       | None      | Password for MongoDB login                               |
+
+### Configuration Example
+
+Please refer to the authentication section in the StackStorm
+[documentation](http://docs.stackstorm.com) for basic setup concept. The
+following is an example of the auth section in the StackStorm configuration file for the flat-file
+backend.
+
+```
+[auth]
+mode = standalone
+backend = mongodb
+backend_kwargs = {"db_username": "admin", "db_password": "pass123"}
+enable = True
+use_ssl = True
+cert = /path/to/ssl/cert/file
+key = /path/to/ssl/key/file
+logging = /path/to/st2auth.logging.conf
+api_url = https://myhost.example.com:9101
+debug = False
+```
 
 ## Copyright, License, and Contributors Agreement
 
