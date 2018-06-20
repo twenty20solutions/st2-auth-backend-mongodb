@@ -13,7 +13,9 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-from mongodb import MongoDBAuthenticationBackend
+from __future__ import absolute_import
+
+from .mongodb import MongoDBAuthenticationBackend
 
 __all__ = [
     'MongoDBAuthenticationBackend'

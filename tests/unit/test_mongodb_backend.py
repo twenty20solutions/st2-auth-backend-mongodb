@@ -26,7 +26,7 @@ class MongoDBAuthenticationBackendTestCase(unittest2.TestCase):
         {
             'username': 'test1',
             'salt': 'salty',
-            'password': hash_function('saltytestpassword').hexdigest()
+            'password': hash_function(b'saltytestpassword').hexdigest()
         }
     ]
 
