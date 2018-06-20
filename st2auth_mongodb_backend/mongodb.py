@@ -16,6 +16,8 @@
 import hashlib
 import logging
 
+import six
+
 import pymongo
 from pymongo import MongoClient
 
@@ -74,7 +76,7 @@ class MongoDBAuthenticationBackend(object):
             return False
 
         password_string = '%s%s' % (salt, password)
-        password_hash = self._hash_function(password_string).hexdigest()
+        password_hash = self._hash_function(six.binary_type(password_string)).hexdigest()
         result = self._collection.find_one({'username': username, 'password': password_hash})
 
         if result and result.get('username', None) == username and \
