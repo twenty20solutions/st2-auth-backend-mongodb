@@ -46,19 +46,19 @@ class MongoDBAuthenticationBackend(object):
     ]
     _hash_function = hashlib.sha256
 
-    def __init__(self, db_host='localhost', db_port=27017, db_name='st2auth', db_username=None,
+    def __init__(self, db_url='mongodb://localhost:27017', db_name='st2auth', db_username=None,
                  db_password=None):
         self._db_name = db_name
-        self._db_host = db_host
-        self._db_port = db_port
+        self._db_url = db_url
         self._db_username = db_username
         self._db_password = db_password
 
-        self._client = MongoClient(host=self._db_host, port=self._db_port, tz_aware=True)
+        self._client = MongoClient(self._db_url,
+            username = self._db_username,
+            password = self._db_password,
+            authSource = 'admin',
+            authMechanism = 'SCRAM-SHA-256')
         self._db = self._client[db_name]
-
-        if self._db_username:
-            self._db.authenticate(name=self._db_username, password=self._db_password)
 
         self._collection = self._db[self._collection_name]
         self._ensure_indexes()
